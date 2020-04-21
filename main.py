@@ -1,5 +1,6 @@
 import copy
 import math
+import minimax
 
 global Board
 
@@ -35,8 +36,17 @@ def coupPossible(board):
   print(listCoups[1])
   return listCoups
 
-def minMax():
-  print("rien")
+def best_move(player):
+  #plays[] = get_plays(board,player)
+  # best = -100000
+  # best_board =[]
+  #for i in (0,plays.length,1)
+  # val = minmax(0,player,false,plays[i],float("-inf"),float("+inf"))
+  # if best<val:
+  # best = val
+  # best_board = plays[i]
+  print("best move")
+  #global_board = best_board
 
 if __name__ == "__main__":
   # INIT PLATEAU DEBUT#
