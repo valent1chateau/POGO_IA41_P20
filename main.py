@@ -1,6 +1,7 @@
 import copy
 import math
 import minimax
+import getplays
 
 global Board
 
@@ -70,35 +71,37 @@ def pl_v_pc():
     
 
 def main():
+    
    # INIT PLATEAU DEBUT#
-  global Board
-  Board = [[0 for x in range(3)] for y in range(3)] 
+    global Board
+ 
+    Board = [[0 for x in range(3)] for y in range(3)] 
 
-
+    
    # LANCE LE MENU CONSOLE#
-  while(1):
-      playing = input("Voulez vous jouer ? (O/N)  ")
-      if(playing != "O"):
-          print("Arret du jeu")
-          return
-      else:
-          for j in range(3):
-              Board[0][j] = [1,1]
-              Board[1][j] = []
-              Board[2][j] = [0,0]
-          print("Choisir une option")
-          print("1 -> Joueur vs PC")
-          print("2 -> PC vs PC")
-          print("3 -> Quitter")
-          mode = input("-> ")
-          if(mode == "1"):
-              print("Lancement: Joueur vs PC")
-          elif (mode== "2"):
-              print("Lancement: PC vs PC")
-          else:
-              return
-     
-  
+    while(1):
+        playing = input("Voulez vous jouer ? (O/N)  ")
+        if(playing != "O"):
+            print("Arret du jeu")
+            return
+        else:
+            for j in range(3):
+                Board[0][j] = [1,1]
+                Board[1][j] = []
+                Board[2][j] = [0,0]
+            print("Choisir une option")
+            print("1 -> Joueur vs PC")
+            print("2 -> PC vs PC")
+            print("3 -> Quitter")
+            mode = input("-> ")
+            if(mode == "1"):
+                print("Lancement: Joueur vs PC")
+            elif (mode== "2"):
+                print("Lancement: PC vs PC")
+            else:
+                return
+      
+       
   # /!\ CREATION DE COPY DE PLATEAU #
   #Board_Copy = copy.deepcopy(Board)
   #Board_Copy[0][0] = [0,0]
