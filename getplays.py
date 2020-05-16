@@ -15,23 +15,19 @@ def finPile(pile):
     return pile[len(pile)-1]
 
 def move(pileOrigine,pileCible,nbPions):
-    pileInter = []
     if(nbPions == 1):
         pileCible.append(pileOrigine[len(pileOrigine)-1])
         pileOrigine.pop()
     elif (nbPions == 2):
-        pileCible.append(pileOrigine[len(pileOrigine)-1])
-        pileInter.append(pileOrigine[len(pileOrigine)-2])
+        for i in range(len(pileOrigine)-1,1,-1):
+            pileCible.append(pileOrigine[i])
         for i in range(2):
             pileOrigine.pop()
-        pileCible.extend(pileInter)
-    else:
-        pileCible.append(pileOrigine[len(pileOrigine)-1])
-        pileInter.append(pileOrigine[len(pileOrigine)-2])
-        pileInter.append(pileOrigine[len(pileOrigine)-3])
+    else: #nbPions == 3
+        for i in range(len(pileOrigine)-1,0,-1):
+            pileCible.append(pileOrigine[i])
         for i in range (3):
             pileOrigine.pop()
-        pileCible.extend(pileInter)
     return 0
 
 def get_plays(Board, player):
@@ -41,19 +37,19 @@ def get_plays(Board, player):
         for j in range(3):
             if(finPile(Board[i][j],i) == player):
                 if(i != 0):
-                    move(play[i][j],play[i-1][j],?)
+                    move(play[i][j],play[i-1][j],1)
                     plays.append(play)
                     play = copy.deepcopy(Board)
                 if(i != 2):
-                    move(play[i][j],play[i+1][j],?)
+                    move(play[i][j],play[i+1][j],1)
                     plays.append(play) 
                     play = copy.deepcopy(Board)
                 if(j != 0):
-                    move(play[i][j],play[i][j-1],?)
+                    move(play[i][j],play[i][j-1],1)
                     plays.append(play)
                     play = copy.deepcopy(Board)
                 if(j != 2):
-                    move(play[i][j],play[i][j+1],?)
+                    move(play[i][j],play[i][j+1],1)
                     plays.append(play)
                     play = copy.deepcopy(Board)
     return plays
