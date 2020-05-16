@@ -40,7 +40,23 @@ def get_plays(Board, player):
     for i in range(3) :
         for j in range(3):
             if(finPile(Board[i][j],i) == player):
-                
+                if(i != 0):
+                    move(play[i][j],play[i-1][j],?)
+                    plays.append(play)
+                    play = copy.deepcopy(Board)
+                if(i != 2):
+                    move(play[i][j],play[i+1][j],?)
+                    plays.append(play) 
+                    play = copy.deepcopy(Board)
+                if(j != 0):
+                    move(play[i][j],play[i][j-1],?)
+                    plays.append(play)
+                    play = copy.deepcopy(Board)
+                if(j != 2):
+                    move(play[i][j],play[i][j+1],?)
+                    plays.append(play)
+                    play = copy.deepcopy(Board)
+    return plays
 
                         
                 
