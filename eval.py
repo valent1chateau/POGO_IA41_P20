@@ -1,19 +1,19 @@
-import numpy as np
-
 def evalboard(board,n):
     eval=0
-    nbTabs=0
-    a,b=np.shape(board)
-    for i in range b:
-        for j in range a:
-            if board[i][j][0]==n:
-                eval+=1
-            else:
-                eval-=1
-        nbTabs+=1
-    if eval == nbTabs:
+    nbTas=0
+    #a,b=np.shape(board)
+    for i in range(3):
+        for j in range(3):
+            l=len(board[i][j]-1)
+            if l!=0:    
+                if board[i][j][l]==n:
+                    eval+=1
+                else:
+                    eval-=1
+                nbTas+=1
+    if eval == nbTas:
         eval= float("inf")
-    elif -eval == nbTabs:
+    elif -eval == nbTas:
         eval=float("-inf")
     
     return eval
