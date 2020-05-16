@@ -1,6 +1,7 @@
 import copy
 import math
 import minimax
+import eval
 
 global Board
 
