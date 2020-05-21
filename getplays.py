@@ -5,10 +5,9 @@ Created on Wed Apr 22 15:01:17 2020
 @author: vlt
 """
 
-import minimax
-#import main
+#import minimax
 import copy
-
+from main import print_board
 global Board
 
 def finPile(pile):
@@ -32,12 +31,12 @@ def move(pileOrigine,pileCible,a,b,nbPions):
                 pileCible.append(pileOrigine[len(pileOrigine)-1])
                 pileOrigine.pop()
         elif(nbPions == 2):
-            for i in range(len(pileOrigine)-1,1,-1):
+            for i in range(len(pileOrigine)-1,-1,-1):
                 pileCible.append(pileOrigine[i])
             for i in range(2):
                 pileOrigine.pop()
         else: #nbPions == 3
-            for i in range(len(pileOrigine)-1,0,-1):
+            for i in range(len(pileOrigine)-1,-1,-1):
                 pileCible.append(pileOrigine[i])
             for i in range (3):
                 pileOrigine.pop()
@@ -49,7 +48,7 @@ def get_plays(player):
     for i in range(3) :
         for j in range(3):
             if(finPile(Board[i][j]) == player):
-                for nbPions in range(1,3): 
+                for nbPions in range(1,3):
                     if(i != 0):
                         move(play[i][j],play[i-1][j],i,j,nbPions)
                         plays.append(play)
@@ -65,9 +64,7 @@ def get_plays(player):
                     if(j != 2):
                         move(play[i][j],play[i][j+1],i,j,nbPions)
                         plays.append(play)
-                        play = copy.deepcopy(Board)
-                        
-    print("done")
+                        play = copy.deepcopy(Board)  
     return plays
 
 
@@ -76,5 +73,20 @@ for j in range(3):
     Board[0][j] = [1,1]
     Board[1][j] = []
     Board[2][j] = [0,0]
-                
-print(get_plays(1))
+ 
+
+    
+
+print("Joueur 0 :\n")
+j0 = get_plays(0)
+for i in range (0,len(j0)-1):
+    print_board(j0[i])
+    print("\n")
+    
+print("Joueur 1 :\n")
+j1 = get_plays(1)
+for i in range (0,len(j1)-1):
+    print_board(j1[i])
+    print("\n")
+    
+print("Taille J0 :",len(j0),"\nTaille J1 :",len(j1))
