@@ -31,40 +31,40 @@ def move(pileOrigine,pileCible,a,b,nbPions):
                 pileCible.append(pileOrigine[len(pileOrigine)-1])
                 pileOrigine.pop()
         elif(nbPions == 2):
-            for i in range(len(pileOrigine)-1,-1,-1):
+            for i in range(len(pileOrigine)-1,len(pileOrigine)-3,-1):
                 pileCible.append(pileOrigine[i])
-            for i in range(2):
+            for i in range(len(pileOrigine)-1,len(pileOrigine)-3,-1):
                 pileOrigine.pop()
-        else: #nbPions == 3
-            for i in range(len(pileOrigine)-1,-1,-1):
+        elif(nbPions == 3):
+            for i in range(len(pileOrigine)-1,len(pileOrigine)-4,-1):
                 pileCible.append(pileOrigine[i])
-            for i in range (3):
+            for i in range (len(pileOrigine)-1,len(pileOrigine)-4,-1):
                 pileOrigine.pop()
     return 0
 
 def get_plays(player):
     plays = []
     play = copy.deepcopy(Board)
-    for i in range(3) :
+    for i in range(3):
         for j in range(3):
             if(finPile(Board[i][j]) == player):
-                for nbPions in range(1,3):
+                for n in range(1,3,1):
                     if(i != 0):
-                        move(play[i][j],play[i-1][j],i,j,nbPions)
+                        move(play[i][j],play[i-1][j],i,j,n)
                         plays.append(play)
                         play = copy.deepcopy(Board)
                     if(i != 2):
-                        move(play[i][j],play[i+1][j],i,j,nbPions)
+                        move(play[i][j],play[i+1][j],i,j,n)
                         plays.append(play) 
                         play = copy.deepcopy(Board)
                     if(j != 0):
-                        move(play[i][j],play[i][j-1],i,j,nbPions)
+                        move(play[i][j],play[i][j-1],i,j,n)
                         plays.append(play)
                         play = copy.deepcopy(Board)
                     if(j != 2):
-                        move(play[i][j],play[i][j+1],i,j,nbPions)
+                        move(play[i][j],play[i][j+1],i,j,n)
                         plays.append(play)
-                        play = copy.deepcopy(Board)  
+                        play = copy.deepcopy(Board)
     return plays
 
 
@@ -73,20 +73,20 @@ for j in range(3):
     Board[0][j] = [1,1]
     Board[1][j] = []
     Board[2][j] = [0,0]
- 
-
-    
-
+"""
 print("Joueur 0 :\n")
 j0 = get_plays(0)
 for i in range (0,len(j0)-1):
     print_board(j0[i])
     print("\n")
     
+"""   
 print("Joueur 1 :\n")
 j1 = get_plays(1)
 for i in range (0,len(j1)-1):
     print_board(j1[i])
     print("\n")
-    
-print("Taille J0 :",len(j0),"\nTaille J1 :",len(j1))
+
+#print("Taille J0 :",len(j0),"\nTaille J1 :",len(j1))
+
+print("Taille J1 :",len(j1))
