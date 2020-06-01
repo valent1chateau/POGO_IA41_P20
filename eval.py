@@ -1,19 +1,38 @@
+# -*- coding: utf-8 -*-
+"""
+Created in 2020
+
+@author: Hadrien, Valentin, Stéphane
+"""
 def evalboard(board,n):
-    eval=0
+    # NOMBRE DE TAS
+    # NOMBRE DE TAS DU JOUEUR
+    # NOMBRE DE TAS DU JOUEUR ADVERSE
+    # NOMBRE DE PIONS ADVERSE SOUS LES TAS DU JOUEUR
+    
+    ev=0
+    nbSous=0
     nbTas=0
-    #a,b=np.shape(board)
     for i in range(3):
         for j in range(3):
-            l=len(board[i][j]-1)
-            if l!=0:    
+            l=len(board[i][j])-1
+            if l>=0:    
                 if board[i][j][l]==n:
-                    eval+=1
+                    ev+=1
+                    for k in range(l-1):
+                        if(board[i][j][k]!=n):
+                            nbSous+=1
                 else:
-                    eval-=1
-                nbTas+=1
-    if eval == nbTas:
-        eval= float("inf")
-    elif -eval == nbTas:
-        eval=float("-inf")
+                    for k in range(l-1):
+                        if(board[i][j][k]==n):
+                            nbSous-=1
+                nbTas +=1
+                
+    if ev/nbTas == 1:
+        ev= float("inf")
+        return ev
+    elif ev/nbTas == 0:
+        ev=float("-inf")
+        return ev
     
-    return eval
+    return nbSous

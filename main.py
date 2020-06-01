@@ -1,18 +1,11 @@
 import copy
 import math
-import minimax
+from minimax import *
 import numpy as np
-import eval
-import getplays
-
-
+from eval import *
+from getplays import *
 
 global Board
-
-
-#math.isinf(float("-inf")) #OUTPUT:True
-#math.isinf(float("inf"))  #OUTPUT:True
-
 
 def print_board(board):
 
@@ -63,45 +56,101 @@ def print_board(board):
         
         
 def best_move(player):
-  #plays[] = get_plays(board,player)
-  # best = -100000
-  # best_board =[]
-  #for i in (0,plays.length,1)
-  # val = minmax(0,player,false,plays[i],float("-inf"),float("+inf"))
-  # if best<val:
-  # best = val
-  # best_board = plays[i]
-  print("best move")
-  #global_board = best_board
+  global Board
+  plays = get_plays(player,Board)
+  best = float("-inf")
+  best_board =[]
+  for i in range(len(plays)):
+      val = minimax(0,player,0,plays[i],float("-inf"),float("+inf"))
+      #print(val)
+      if best<=val:
+          best = val
+          best_board = plays[i]
+  return best_board
 
 #PC vs PC game
 def pc_v_pc():
-    print("pc v pc")
     global Board
-    pc1 = 0
-    pc2 = 1
     curr_player = 0
-    #while(!math.isinf(eval(board,curr_player))):
-    # plays = get_plays(Board, curr_player)
-    # for play in plays
-    # minimax(play,...)
-    # curr_player = !curr_player
+    print_board(Board)
+    print("player 0 starts")
+    print("")
+    while(1):
+        print("")
+        print("Tour ",end='')
+        print(curr_player)
+        print("")
+        Board = best_move(curr_player)
+        print_board(Board)
+        if(evalboard(Board,curr_player) == float("inf") or evalboard(Board,curr_player)== float("-inf")):
+            print("player:",end='')
+            print(curr_player,end='')
+            print(" won!",end='')
+            break;
+        curr_player= 1-curr_player
+    
 
 def player_move(id):
-    print("id")
+    global Board
+    plays = get_plays(id,Board)
+    print("Quelle pile vous voulez changer")
+    ligne_s = int(input("Ligne-> "))
+    col_s = int(input("Colonne-> "))
+    nbPions = int(input("Nombre de Pions que vous voulez deplacer-> "))
+    print("Ou vous voulez mettre ceci?")
+    ligne_d = int(input("Ligne destination-> "))
+    col_d = int(input("Colonne destination-> "))
+    
+    
+    play = copy.deepcopy(Board)
+    try:
+        move(play[ligne_s][col_s],play[ligne_d][col_d],ligne_s,col_s,nbPions)
+    except:
+        print("mauvaises valeurs")
+        
+    is_in = 0
+    for p in plays:
+        cpt =0
+        for i in range(3):
+            for j in range(3):
+                if(p[i][j]==play[i][j]):
+                    cpt+=1  
+        if(cpt==9):
+            is_in=1
+            break
+        
+    Board = play
+    #print(is_in)
         
 #PLAYER vs PC game
 def pl_v_pc():
-    print("pl v pc")
-    
+    global Board   
+    print("Vous êtes le joueur 0")
+    print_board(Board)
+    curr_player = 1
+    while(1):
+        if(curr_player ==0):
+            print("Tour 0")
+            player_move(curr_player)
+            print_board(Board)
+        else:
+            print("Tour 1")
+            Board = best_move(curr_player)
+            print_board(Board)
+        
+        if(evalboard(Board,curr_player) == float("inf") or evalboard(Board,curr_player)== float("-inf")):
+            print("player:",end='')
+            print(curr_player,end='')
+            print(" won!",end='')
+            break;
+        curr_player= 1-curr_player
 
 def main():
     
    # INIT PLATEAU DEBUT#
     global Board
  
-    Board = [[0 for x in range(3)] for y in range(3)] 
-
+    Board = [[[] for x in range(3)] for y in range(3)] 
     
    # LANCE LE MENU CONSOLE#
     while(1):
@@ -121,21 +170,13 @@ def main():
           mode = input("-> ")
           if(mode == "1"):
               print("Lancement: Joueur vs PC")
-              print_board(Board)
+              pl_v_pc()
           elif (mode== "2"):
               print("Lancement: PC vs PC")
+              pc_v_pc()
           else:
               return
-     
-  
-  # /!\ CREATION DE COPY DE PLATEAU #
-  #Board_Copy = copy.deepcopy(Board)
-  #Board_Copy[0][0] = [0,0]
-  #Board_Copy[0][0].append(1) # fonction de array utilisable
-  #print(Board_Copy)
-  #print(Board)
-
-  #coupPossible(Board)
+    
 
 if __name__ == "__main__":
     main()

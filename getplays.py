@@ -1,92 +1,158 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Apr 22 15:01:17 2020
+Created in 2020
 
-@author: vlt
+@author: Hadrien, Valentin, Stéphane
 """
 
-#import minimax
 import copy
-from main import print_board
 global Board
 
-def finPile(pile):
-    if not (pile):
-        return False
-    else:
-        if (len(pile)==0):
-            return pile[0]
-        else:
-            return pile[len(pile)-1]
+def endStack(stack):
+    """
+    Parameters
+    ----------
+    stack : stack you want the value from
 
-def move(pileOrigine,pileCible,a,b,nbPions):
-    if not (pileOrigine):
+    Returns
+    -------
+    last value of the stack
+
+    """
+    if not (stack):
+        return -1
+    else:
+        if (len(stack)==0):
+            return stack[0]
+        else:
+            return stack[len(stack)-1]
+
+def move(original_stack,target_stack,a,b,piece):
+    """
+    Parameters
+    ----------
+    original_stack : stack
+    target_stack : stack
+    a : ligne index
+    b : column index
+    piece : number of pieces to move
+
+    Returns
+    -------
+    Succes or failure
+
+    """
+    if not (original_stack):
         print("source is empty")
-    elif (pileOrigine):
-        if(nbPions == 1):
-            if(len(pileOrigine) == 0):
-                pileCible.append(Board[a][b])
-                pileOrigine.pop()    
+    elif (original_stack):
+        if(piece == 1):
+            if(len(original_stack) == 0):
+                target_stack.append(Board[a][b])
+                original_stack.pop()    
             else:
-                pileCible.append(pileOrigine[len(pileOrigine)-1])
-                pileOrigine.pop()
-        elif(nbPions == 2):
-            for i in range(len(pileOrigine)-1,len(pileOrigine)-3,-1):
-                pileCible.append(pileOrigine[i])
-            for i in range(len(pileOrigine)-1,len(pileOrigine)-3,-1):
-                pileOrigine.pop()
-        elif(nbPions == 3):
-            for i in range(len(pileOrigine)-1,len(pileOrigine)-4,-1):
-                pileCible.append(pileOrigine[i])
-            for i in range (len(pileOrigine)-1,len(pileOrigine)-4,-1):
-                pileOrigine.pop()
+                target_stack.append(original_stack[len(original_stack)-1])
+                original_stack.pop()
+        elif(piece == 2):
+            for i in range(len(original_stack)-2,len(original_stack),1):
+                target_stack.append(original_stack[i])#add to target stack
+            for i in range(len(original_stack)-2,len(original_stack),1):
+                original_stack.pop()#removes from original stack
+        elif(piece == 3):
+            for i in range(len(original_stack)-3,len(original_stack),1):
+                target_stack.append(original_stack[i])
+            for i in range (len(original_stack)-3,len(original_stack),1):
+                original_stack.pop()
     return 0
 
-def get_plays(player):
+def get_plays(player,board):
+    """
+    Parameters
+    ----------
+    player : player id
+    board : 3D array representing the board on a certain turn
+
+    Returns
+    -------
+    plays : array of boards with all possible plays to make for the given player
+
+    """
+    global Board
+    Board = board
     plays = []
-    play = copy.deepcopy(Board)
-    for i in range(3):
-        for j in range(3):
-            if(finPile(Board[i][j]) == player):
-                for n in range(1,3,1):
-                    if(i != 0):
-                        move(play[i][j],play[i-1][j],i,j,n)
-                        plays.append(play)
+
+    for i in range(3) :
+        for j in range(3):        
+            if(endStack(Board[i][j]) == player):#if the top 
+                t = len(Board[i][j])
+                if t>3:
+                    t=3
+                for k in range(1,t+1):
+                    for n in range(0,k):
+                        tmp = k-n
+                        ###############################################                        
                         play = copy.deepcopy(Board)
-                    if(i != 2):
-                        move(play[i][j],play[i+1][j],i,j,n)
-                        plays.append(play) 
+                        try:
+                            move(play[i][j],play[i+n][j+tmp],i,j,k)
+                            plays.append(play)
+                        except:
+                            pass
+                        ###############################################
                         play = copy.deepcopy(Board)
-                    if(j != 0):
-                        move(play[i][j],play[i][j-1],i,j,n)
-                        plays.append(play)
+                        try:
+                            if(i-n>=0 and j-tmp>=0):
+                                move(play[i][j],play[i-n][j-tmp],i,j,k)
+                                plays.append(play)
+                        except:
+                            pass
+                        ###############################################
                         play = copy.deepcopy(Board)
-                    if(j != 2):
-                        move(play[i][j],play[i][j+1],i,j,n)
-                        plays.append(play)
+                        try:
+                            if(j-n>=0):
+                                move(play[i][j],play[i+tmp][j-n],i,j,k)
+                                plays.append(play)
+                        except:
+                            pass
+                        ###############################################
                         play = copy.deepcopy(Board)
+                        try:
+                            if(i-tmp>=0):
+                                move(play[i][j],play[i-tmp][j+n],i,j,k)
+                                plays.append(play)
+                        except:
+                            pass
+                            
+                        ################################################
+                        ## CAS EXCEPTIONEL DES MOUVEMENTS DE 3        ##
+                        ################################################
+                        if(t==3 and k==1 and n==0):
+                            play = copy.deepcopy(Board)
+                            try:
+                                move(play[i][j],play[i+n][j+tmp],i,j,3)
+                                plays.append(play)
+                            except:
+                                pass
+                            ###############################################
+                            play = copy.deepcopy(Board)
+                            try:
+                                if(i-n>=0 and j-tmp>=0):
+                                    move(play[i][j],play[i-n][j-tmp],i,j,3)
+                                    plays.append(play)
+                            except:
+                                pass
+                            ###############################################
+                            play = copy.deepcopy(Board)
+                            try:
+                                if(j-n>=0):
+                                    move(play[i][j],play[i+tmp][j-n],i,j,3)
+                                    plays.append(play)
+                            except:
+                                pass
+                            ###############################################
+                            play = copy.deepcopy(Board)
+                            try:
+                                if(i-tmp>=0):
+                                    move(play[i][j],play[i-tmp][j+n],i,j,3)
+                                    plays.append(play)
+                            except:
+                                pass
     return plays
-
-
-Board = [[[] for i in range (3)] for j in range(3)]
-for j in range(3):
-    Board[0][j] = [1,1]
-    Board[1][j] = []
-    Board[2][j] = [0,0]
-"""
-print("Joueur 0 :\n")
-j0 = get_plays(0)
-for i in range (0,len(j0)-1):
-    print_board(j0[i])
-    print("\n")
-    
-"""   
-print("Joueur 1 :\n")
-j1 = get_plays(1)
-for i in range (0,len(j1)-1):
-    print_board(j1[i])
-    print("\n")
-
-#print("Taille J0 :",len(j0),"\nTaille J1 :",len(j1))
-
-print("Taille J1 :",len(j1))
