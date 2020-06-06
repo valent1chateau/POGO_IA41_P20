@@ -6,14 +6,10 @@ Created on Wed Jun  3 14:22:06 2020
 """
 import tkinter as tk
 from PIL import ImageTk,Image
-import main
-import tkinter.simpledialog as sd
 import sys
+import tkinter.simpledialog as sd
+from main import *
     
-
-
-
-
 def start():
     root = tk.Tk()   
     root.title('Jeu du pogo')
@@ -44,7 +40,21 @@ def getUserInput(msg):
     userInput = sd.askstring('User Input',msg)
     return userInput
 
+def getUserInt(msg):
+    userInput = sd.askinteger('User Input',msg)
+    return userInput
+
 def pogoGame(t):
-    t.insert(tk.END,"Voulez vous jouer?")
-    
+    t.insert(tk.INSERT,"Voulez vous jouer? \n")
+    if (getUserInput("Voulez vous jouer ? O/N") != "O"):
+        t.insert(tk.INSERT, "Arrêt du jeu \n")
+    else :
+        t.insert(tk.INSERT, "Choisir une option \n 1 -> Joueur vs PC \n 2 -> PC vs PC \n 3 -> Quitter \n")
+    if (getUserInt("Que choissisez-vous ?") == 1):
+        t.insert(tk.INSERT, "Lancement Joueur vs PC en cours...")
+    elif(getUserInt("Que choissisez-vous ?") == 2):
+        t.insert(tk.INSERT, "Lancement PC vs PC en cours...")
+    else:
+        game.destroy
+        
 start()
