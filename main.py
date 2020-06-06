@@ -4,7 +4,7 @@ from minimax import *
 import numpy as np
 from eval import *
 from getplays import *
-
+from gui import *
 global Board
 
 def print_board(board):
@@ -89,6 +89,8 @@ def pc_v_pc():
             break;
         curr_player= 1-curr_player
     
+def testing():
+    write("allo")
 
 def player_move(id):
     global Board
@@ -151,10 +153,9 @@ def main():
     global Board
  
     Board = [[[] for x in range(3)] for y in range(3)] 
-    
    # LANCE LE MENU CONSOLE#
     while(1):
-      playing = input("Voulez vous jouer ? (O/N)  ")
+      playing = getUserInput("Voulez vous jouer ? (O/N)")
       if(playing != "O"):
           print("Arret du jeu")
           return
