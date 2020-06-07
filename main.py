@@ -11,12 +11,11 @@ def print_board(board):
 
     lens = [[len(x) for x in y]for y in board]
     max = np.amax(lens)
-    char = "A"
-    asc = ord(char[0])
+    char = 0
     
     print("  ",end='')
     t = (max+max-1+2)*3
-    cpt = 1
+    cpt = 0
     for i in range(t):
         if i == int(t/6) or i == int(3*t/6) or i == int(5*t/6):
             print(cpt,end='')
@@ -26,7 +25,8 @@ def print_board(board):
     print()
     
     for i in range(3):
-        print(chr(asc+i)+" ",end='')
+        print(str(char)+" ",end='')
+        char+=1
         for j in range (3):
             l = len(board[i][j])
             if l == 0:
