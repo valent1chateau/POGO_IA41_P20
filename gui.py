@@ -35,6 +35,7 @@ def game(root):
     pogoGame(textField)
     
     game.mainloop()
+    root.destroy()
     
 def getUserInput(msg):
     userInput = sd.askstring('User Input',msg)
@@ -48,10 +49,12 @@ def pogoGame(t):
     t.insert(tk.INSERT,"Voulez vous jouer? \n")
     if (getUserInput("Voulez vous jouer ? O/N") != "O"):
         t.insert(tk.INSERT, "Arrêt du jeu \n")
+        game.destroy()
     else :
         t.insert(tk.INSERT, "Choisir une option \n 1 -> Joueur vs PC \n 2 -> PC vs PC \n 3 -> Quitter \n")
     if (getUserInt("Que choissisez-vous ?") == 1):
         t.insert(tk.INSERT, "Lancement Joueur vs PC en cours...")
+        
     elif(getUserInt("Que choissisez-vous ?") == 2):
         t.insert(tk.INSERT, "Lancement PC vs PC en cours...")
     else:

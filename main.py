@@ -89,9 +89,6 @@ def pc_v_pc():
             break;
         curr_player= 1-curr_player
     
-def testing():
-    write("allo")
-
 def player_move(id):
     global Board
     plays = get_plays(id,Board)
