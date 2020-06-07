@@ -148,14 +148,15 @@ def main():
     
    # INIT PLATEAU DEBUT#
     global Board
- 
+
     Board = [[[] for x in range(3)] for y in range(3)] 
 
     for j in range(3):
-        Board[0][j] = [1,1]
+        Board[0][j] = [1,1,1,1]
         Board[1][j] = []
         Board[2][j] = [0,0]
     return 0
 
 if __name__ == "__main__":
     main()
+    start(Board)
