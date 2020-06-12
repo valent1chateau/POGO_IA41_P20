@@ -6,9 +6,10 @@ from eval import *
 from getplays import *
 from gui import *
 global Board
+import tkinter as tk
+import tkinter.simpledialog as sd
 
 def print_board(board):
-
     lens = [[len(x) for x in y]for y in board]
     max = np.amax(lens)
     char = 0
@@ -55,18 +56,17 @@ def print_board(board):
         print("")
         
         
-def best_move(player):
-  global Board
-  plays = get_plays(player,Board)
-  best = float("-inf")
-  best_board =[]
-  for i in range(len(plays)):
-      val = minimax(0,player,0,plays[i],float("-inf"),float("+inf"))
-      #print(val)
-      if best<=val:
-          best = val
-          best_board = plays[i]
-  return best_board
+def best_move(player, board):
+    plays = get_plays(player, board)
+    best = float("-inf")
+    best_board =[]
+    for i in range(len(plays)):
+        val = minimax(0,player,0,plays[i],float("-inf"),float("+inf"))
+        #print(val)
+        if best<=val:
+            best = val
+            best_board = plays[i]
+    return best_board
 
 #PC vs PC game
 def pc_v_pc():
@@ -88,24 +88,23 @@ def pc_v_pc():
             print(" won!",end='')
             break;
         curr_player= 1-curr_player
+        
+
     
-def player_move(id):
-    global Board
+def player_move(t,id, Board):
     plays = get_plays(id,Board)
-    print("Quelle pile vous voulez changer")
-    ligne_s = int(input("Ligne-> "))
-    col_s = int(input("Colonne-> "))
-    nbPions = int(input("Nombre de Pions que vous voulez deplacer-> "))
-    print("Ou vous voulez mettre ceci?")
-    ligne_d = int(input("Ligne destination-> "))
-    col_d = int(input("Colonne destination-> "))
-    
+    t.insert(tk.INSERT,"Quelle pile voulez-vous changer ?")
+    ligne_s = getUserInt("Rentrez la ligne de la pile à déplacer :")
+    col_s = getUserInt("Rentrez la colonne de la pile à déplacer :")
+    nbPions = getUserInt("Rentrez le nombre de pions à déplacer :")
+    ligne_d = getUserInt("Ligne destination :")
+    col_d = getUserInt("Colonne destination :")
     
     play = copy.deepcopy(Board)
     try:
         move(play[ligne_s][col_s],play[ligne_d][col_d],ligne_s,col_s,nbPions)
     except:
-        print("mauvaises valeurs")
+        t.insert(tk.INSERT,"\n Mauvaises valeurs \n")
         
     is_in = 0
     for p in plays:
@@ -120,7 +119,7 @@ def player_move(id):
         
     Board = play
     #print(is_in)
-        
+       
 #PLAYER vs PC game
 def pl_v_pc():
     global Board   
@@ -134,7 +133,7 @@ def pl_v_pc():
             print_board(Board)
         else:
             print("Tour 1")
-            Board = best_move(curr_player)
+            Board = best_move(curr_player, Board)
             print_board(Board)
         
         if(evalboard(Board,curr_player) == float("inf") or evalboard(Board,curr_player)== float("-inf")):
@@ -143,7 +142,7 @@ def pl_v_pc():
             print(" won!",end='')
             break;
         curr_player= 1-curr_player
-
+        
 def main():
     
    # INIT PLATEAU DEBUT#
@@ -152,7 +151,7 @@ def main():
     Board = [[[] for x in range(3)] for y in range(3)] 
 
     for j in range(3):
-        Board[0][j] = [1,1,1,1]
+        Board[0][j] = [1,1]
         Board[1][j] = []
         Board[2][j] = [0,0]
     return 0
