@@ -1,8 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Jun  3 14:22:06 2020
-@author: vlt
-"""
 import tkinter as tk
 from PIL import ImageTk,Image
 import sys
@@ -13,6 +8,19 @@ import time
 global Board  
 
 def start(board):
+    """
+    Function generating the first window with 'Play' and 'Quit' button
+    
+    Parameters
+    ----------
+    board : 3D array representing the board at a certain turn
+        
+
+    Returns
+    -------
+    None
+
+    """
     global Board 
     Board = board
     root = tk.Tk() 
@@ -33,27 +41,101 @@ def start(board):
     root.mainloop()
 
 def game_window(root):
+    """
+    Function generating the second window in which the game is displayed
+
+    Parameters
+    ----------
+    root : WindowType object of the menu window
+
+    Returns
+    -------
+    None.
+
+    """
     game = tk.Tk()
-    game.title('Jeu du pogo')
+    game.title('Pogo')
+    icon = tk.PhotoImage(file='dice.png')
+    game.call('wm', 'iconphoto', game._w, icon)
     S = tk.Scrollbar(game)
-    T = tk.Text(game, height=35, width=50)
+    T = tk.Text(game, height=21, width=60, bg="black",font="Fixedsys", fg="white")
     S.pack(side=tk.RIGHT, fill=tk.Y)
-    T.pack(side=tk.LEFT, fill=tk.Y)
+    T.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
     S.config(command=T.yview)
     T.config(yscrollcommand=S.set)
-    pogoGame(T, game)
+    pogoGame(T, game)   
     
     game.mainloop()
     
-def getUserInput(msg):
-    userInput = sd.askstring('User Input',msg)
-    return userInput
+def pogoGame(t, game):
+    """
+    Function summoned when the game window opens, who takes charge of the
+    instructions and user's input before calling 
 
+    Parameters
+    ----------
+    t : Text field created in the game window and used to display the board
+    and instructions for the player
+    
+    game : WindowType object of the window displaying the game
+
+
+    Returns
+    -------
+    None
+
+    """
+    t.insert(tk.INSERT, "Choisir une option \n 1 -> Joueur vs PC \n 2 -> PC vs PC \n 3 -> Quitter \n")
+    
+    input1 = getUserInt("Quelle option choississez-vous ?") 
+    inputBool = False
+    while(inputBool == False):
+        if(input1 == 1):
+            t.insert(tk.INSERT, "Lancement Joueur vs PC en cours... \n")
+            pl_v_pc_gui(t,game)
+            break
+        elif(input1 == 2):
+            t.insert(tk.INSERT, "Lancement PC vs PC en cours... \n")
+            pc_v_pc_gui(t,game)
+            break
+        elif(input1 == 3):
+            game.destroy()
+            break
+        input1 = getUserInt("Que choissisez-vous ?") 
+    
+    
 def getUserInt(msg):
-    userInput = sd.askinteger('User Input',msg)
+    """
+    Creates a dialog window that allows the user to input an int
+
+    Parameters
+    ----------
+    msg : String of the message displayed in the dialog window
+
+    Returns
+    -------
+    userInput : Int entered by the user
+
+    """
+    userInput = sd.askinteger('',msg)
     return userInput
 
 def print_guiboard(text,board):
+    """
+    Display the board in the game window
+
+    Parameters
+    ----------
+    text : Text field created in the game window and used to display the board
+    and instructions for the player
+        
+    board : 3D array representing the board at a certain turn
+
+    Returns
+    -------
+    None
+
+    """
     lens = [[len(x) for x in y]for y in board]
     max = np.amax(lens)
     char = 0
@@ -99,23 +181,46 @@ def print_guiboard(text,board):
                     text.insert(tk.INSERT," ]",tk.END)
         text.insert(tk.INSERT," ")
         text.insert(tk.INSERT,"\n")
+        text.yview(tk.END)
 
        
-def player_move_gui(id,t):
+def player_move_gui(id,t,game):
+    """
+    Function summoning dialogs where the user can enter the source, destination and 
+    number of pieces he wants to move
+    
+    Parameters
+    ----------
+    id : Int representing each player (0 or 1)
+    
+    t : Text field created in the game window and used to display the board
+    and instructions for the player
+    
+    game : WindowType object of the window displaying the game
+
+    Returns
+    -------
+    None
+
+    """
     global Board
     plays = get_plays(id,Board)
     t.insert(tk.INSERT,"Quelle pile voulez-vous changer ?")
-    ligne_s = getUserInt("Rentrez la ligne de la pile à déplacer :")
+    ligne_s = getUserInt("Rentrez la ligne de la pile à déplacer :") 
+    if (ligne_s == 99):
+        game.destroy()
     col_s = getUserInt("Rentrez la colonne de la pile à déplacer :")
     nbPions = getUserInt("Rentrez le nombre de pions à déplacer :")
     ligne_d = getUserInt("Ligne destination :")
     col_d = getUserInt("Colonne destination :")
+    
     play = copy.deepcopy(Board)
-
+    
     try:
         move(play[ligne_s][col_s],play[ligne_d][col_d],ligne_s,col_s,nbPions)
     except:
-        t.insert(tk.INSERT,"\n Mauvaises valeurs \n")
+        t.insert(tk.INSERT,"\nMauvaises valeurs, réessayez \n")
+        player_move_gui(id,t,game)
 
     is_in = 0
     for p in plays:
@@ -129,7 +234,22 @@ def player_move_gui(id,t):
             break  
     Board = play
 
-def pl_pc_gui(t,game):
+def pl_v_pc_gui(t,game):
+    """
+    Function summoned when the players chooses to play against the AI
+
+    Parameters
+    ----------
+    t : Text field created in the game window and used to display the board
+    and instructions for the player
+    
+    game : WindowType object of the window displaying the game
+
+    Returns
+    -------
+    None
+
+    """
     global Board
     for j in range(3):
         Board[0][j] = [1,1]
@@ -141,25 +261,49 @@ def pl_pc_gui(t,game):
     print_guiboard(t, Board)
     t.insert(tk.INSERT,"------------------------ \n")
     curr_player = 0
-    i=0
+    i=1
     while(1):
+        t.insert(tk.INSERT, "Tour "+str(i)+" \n")
         if(curr_player==0):
-            t.insert(tk.INSERT, "Tour "+str(i)+" \n")
-            player_move_gui(curr_player, t)
+            player_move_gui(curr_player, t, game) #argument game à supprimer après tests
+            t.insert(tk.INSERT,"\n")
             print_guiboard(t,Board)
             t.insert(tk.INSERT,"------------------------ \n")
         else:
-            t.insert(tk.INSERT, "Tour 1 \n")
             Board = best_move(curr_player, Board)
             print_guiboard(t,Board)
-        
+            t.insert(tk.INSERT,"------------------------ \n")
+
         if(evalboard(Board,curr_player) == float("inf") or evalboard(Board,curr_player) == float("-inf")):
-           t.insert(tk.INSERT, "Player "+curr_player+" won !")
-           break
+            if(curr_player == 0):
+                t.insert(tk.INSERT, "\n Vous avez gagné !")
+            else:
+                t.insert(tk.INSERT, "\n L'IA a gagné :(")
+            break
         curr_player=1-curr_player
         i+=1
+    ans = tk.messagebox.askyesno(title=None,message="Voulez-vous rejouer ?")
+    if(ans == True):
+        t.delete('1.0', 'end')
+        pogoGame(t,game)
         
-def pc_v_pc_gui(t):
+def pc_v_pc_gui(t,game):
+    """
+    Function summoned when the players chooses to watch two AIs playing 
+    against each other
+
+    Parameters
+    ----------
+    t : Text field created in the game window and used to display the board
+    and instructions for the player
+    
+    game : WindowType object of the window displaying the game
+
+    Returns
+    -------
+    None
+
+    """
     global Board
     for j in range(3):
         Board[0][j] = [1,1]
@@ -167,38 +311,20 @@ def pc_v_pc_gui(t):
         Board[2][j] = [0,0]
     curr_player = 0
     print_guiboard(t,Board)
-    t.insert(tk.INSERT,"\n Player 0 starts \n")
-    i=0
+    t.insert(tk.INSERT,"\n Le joueur 0 commence \n")
+    i=1
     while(1):
-        t.insert(tk.INSERT,"\n Tour "+str(i)+" : \n \n")
+        t.insert(tk.INSERT, "\n Tour "+str(i)+" : \n")
         Board = best_move(curr_player,Board)
         print_guiboard(t,Board)
         t.insert(tk.INSERT,"------------------------ \n")
         if(evalboard(Board,curr_player) == float("inf") or evalboard(Board,curr_player)== float("-inf")):
-            t.insert(tk.INSERT,"\n player "+(str(curr_player)+" won !"))
+            t.insert(tk.INSERT,"\n L'IA "+(str(curr_player)+" a gagné !"))
             break;
         curr_player= 1-curr_player
         i+=1
-
-def pogoGame(t, game):
-    t.insert(tk.INSERT, "Choisir une option \n 1 -> Joueur vs PC \n 2 -> PC vs PC \n 3 -> Quitter \n")
-    
-    input1 = getUserInt("Que choissisez-vous ?") 
-    inputBool = False
-    while(inputBool == False):
-        if(input1 == 1):
-            t.insert(tk.INSERT, "Lancement Joueur vs PC en cours... \n")
-            pl_pc_gui(t)
-            break
-        elif(input1 == 2):
-            t.insert(tk.INSERT, "Lancement PC vs PC en cours... \n")
-            pc_v_pc_gui(t)
-            break
-        elif(input1 == 3):
-            game.destroy()
-            break
-        input1 = getUserInt("Que choissisez-vous ?") 
-
-         
-
-                
+    ans = tk.messagebox.askyesno(title=None,message="Voulez-vous rejouer ?")
+    if(ans == True):
+        t.delete('1.0', 'end')
+        pogoGame(t,game)
+                 
