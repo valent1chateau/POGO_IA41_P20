@@ -42,26 +42,23 @@ def move(original_stack,target_stack,a,b,piece):
     Succes or failure
 
     """
-    if not (original_stack):
-        print("source is empty")
-    elif (original_stack):
-        if(piece == 1):
-            if(len(original_stack) == 0):
-                target_stack.append(Board[a][b])
-                original_stack.pop()    
-            else:
-                target_stack.append(original_stack[len(original_stack)-1])
-                original_stack.pop()
-        elif(piece == 2):
-            for i in range(len(original_stack)-2,len(original_stack),1):
-                target_stack.append(original_stack[i])#add to target stack
-            for i in range(len(original_stack)-2,len(original_stack),1):
-                original_stack.pop()#removes from original stack
-        elif(piece == 3):
-            for i in range(len(original_stack)-3,len(original_stack),1):
-                target_stack.append(original_stack[i])
-            for i in range (len(original_stack)-3,len(original_stack),1):
-                original_stack.pop()
+    if(piece == 1):
+        if(len(original_stack) == 0):
+            target_stack.append(Board[a][b])
+            original_stack.pop()    
+        else:
+            target_stack.append(original_stack[len(original_stack)-1])
+            original_stack.pop()
+    elif(piece == 2):
+        for i in range(len(original_stack)-2,len(original_stack),1):
+            target_stack.append(original_stack[i])#add to target stack
+        for i in range(len(original_stack)-2,len(original_stack),1):
+            original_stack.pop()#removes from original stack
+    elif(piece == 3):
+        for i in range(len(original_stack)-3,len(original_stack),1):
+            target_stack.append(original_stack[i])
+        for i in range (len(original_stack)-3,len(original_stack),1):
+            original_stack.pop()
     return 0
 
 def get_plays(player,board):

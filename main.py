@@ -93,7 +93,7 @@ def pc_v_pc():
     
 def player_move(t,id, Board):
     plays = get_plays(id,Board)
-    t.insert(tk.INSERT,"Quelle pile voulez-vous changer ?")
+    t.insert(tk.INSERT,"\n Quelle pile voulez-vous changer ?")
     ligne_s = getUserInt("Rentrez la ligne de la pile à déplacer :")
     col_s = getUserInt("Rentrez la colonne de la pile à déplacer :")
     nbPions = getUserInt("Rentrez le nombre de pions à déplacer :")
