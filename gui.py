@@ -293,7 +293,7 @@ def pl_v_pc_gui(t,game):
             break
         curr_player=1-curr_player
         i+=1
-    ans = tk.messagebox.askyesno(title=None,message="Voulez-vous rejouer ?")
+    ans = tk.messagebox.askyesno(title='Pogo',message="Voulez-vous rejouer ?")
     if(ans == True):
         t.delete('1.0', 'end')
         pogoGame(t,game)
@@ -334,7 +334,7 @@ def pc_v_pc_gui(t,game):
             break;
         curr_player= 1-curr_player
         i+=1
-    ans = tk.messagebox.askyesno(title=Pogo,message="Voulez-vous rejouer ?")
+    ans = tk.messagebox.askyesno(title='Pogo',message="Voulez-vous rejouer ?")
     if(ans == True):
         t.delete('1.0', 'end')
         pogoGame(t,game)
