@@ -10,6 +10,8 @@ global Board
 
 def endStack(stack):
     """
+    return the id at the end of the given stack
+    
     Parameters
     ----------
     stack : stack you want the value from
@@ -63,6 +65,8 @@ def move(original_stack,target_stack,a,b,piece):
 
 def get_plays(player,board):
     """
+    Generate all possible moves that player can make given a certain board
+    
     Parameters
     ----------
     player : player id
@@ -119,7 +123,7 @@ def get_plays(player,board):
                             pass
                             
                         ################################################
-                        ## CAS EXCEPTIONEL DES MOUVEMENTS DE 3        ##
+                        ##       SPECIAL CASE 3 PIECES TO MOVE        ##
                         ################################################
                         if(t==3 and k==1 and n==0):
                             play = copy.deepcopy(Board)

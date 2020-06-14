@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created in 2020
+
+@author: Hadrien, Valentin, Stéphane
+"""
+
 import copy
 import math
 from minimax import *
@@ -7,66 +14,32 @@ from getplays import *
 from gui import *
 global Board
 import tkinter as tk
-import tkinter.simpledialog as sd
-
-def print_board(board):
-    lens = [[len(x) for x in y]for y in board]
-    max = np.amax(lens)
-    char = 0
-    
-    print("  ",end='')
-    t = (max+max-1+2)*3
-    cpt = 0
-    for i in range(t):
-        if i == int(t/6) or i == int(3*t/6) or i == int(5*t/6):
-            print(cpt,end='')
-            cpt+=1  
-        else:
-            print(" ",end='')
-    print()
-    
-    for i in range(3):
-        print(str(char)+" ",end='')
-        char+=1
-        for j in range (3):
-            l = len(board[i][j])
-            if l == 0:
-                print("[",end='')
-                for m in range(max-1):
-                    print("  ",end='')
-                print(" ]",end='')
-            else :
-                if l == max:       
-                    for k in range(l):
-                        if k == 0:
-                            print("[",end='')
-                        print(str(board[i][j][k]),end='')
-                        if k==l-1:
-                            print("]",end='')
-                        else:
-                            print(" ",end='')
-                else:
-                    for k in range(l):
-                        if k == 0:
-                            print("[",end='')
-                        print(str(board[i][j][k])+" ",end='')
-                    for n in range(0,max-l-1,1):
-                        print("  ",end='')
-                    print(" ]",end='')
-        print("")
-        
+import tkinter.simpledialog as sd       
         
 def best_move(player, board):
+    """
+    Does a maximisation of minmax to remember the board and starts the minmax algorithm 
+
+    Parameters
+    ----------
+    player : player id
+    board : 3D array representing the current board
+
+    Returns
+    -------
+    best_board : returns the new board after making the best move
+
+    """
     plays = get_plays(player, board)
     best = float("-inf")
     best_board =[]
     for i in range(len(plays)):
         val = minimax(0,player,0,plays[i],float("-inf"),float("+inf"))
-        #print(val)
         if best<=val:
             best = val
             best_board = plays[i]
     return best_board
+<<<<<<< HEAD
 
 #PC vs PC game
 def pc_v_pc():
@@ -142,9 +115,19 @@ def pl_v_pc():
             print(" won!",end='')
             break;
         curr_player= 1-curr_player
+=======
+>>>>>>> de7fcfa38a247f23ef2c2d5a6bf293a73644a4e1
         
 def main():
-    
+    """
+    Initialize the board
+
+    Returns
+    -------
+    int
+        success
+
+    """
    # INIT PLATEAU DEBUT#
     global Board
 

@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created in 2020
+
+@author: Hadrien, Valentin, Stéphane
+"""
+
 import tkinter as tk
 from PIL import ImageTk,Image
 import sys
@@ -221,6 +228,7 @@ def player_move_gui(id,t,game):
     except:
         t.insert(tk.INSERT,"\nMauvaises valeurs, réessayez \n")
         player_move_gui(id,t,game)
+        return
 
     is_in = 0
     for p in plays:
@@ -231,7 +239,10 @@ def player_move_gui(id,t,game):
                     cpt+=1  
         if(cpt==9):
             is_in=1
-            break  
+            break
+    if(is_in==0):#if illegal move ask again
+        player_move_gui(id,t,game)
+        return
     Board = play
 
 def pl_v_pc_gui(t,game):
@@ -323,7 +334,7 @@ def pc_v_pc_gui(t,game):
             break;
         curr_player= 1-curr_player
         i+=1
-    ans = tk.messagebox.askyesno(title=None,message="Voulez-vous rejouer ?")
+    ans = tk.messagebox.askyesno(title=Pogo,message="Voulez-vous rejouer ?")
     if(ans == True):
         t.delete('1.0', 'end')
         pogoGame(t,game)
