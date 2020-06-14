@@ -39,7 +39,6 @@ def best_move(player, board):
             best = val
             best_board = plays[i]
     return best_board
-<<<<<<< HEAD
 
 #PC vs PC game
 def pc_v_pc():
@@ -115,8 +114,7 @@ def pl_v_pc():
             print(" won!",end='')
             break;
         curr_player= 1-curr_player
-=======
->>>>>>> de7fcfa38a247f23ef2c2d5a6bf293a73644a4e1
+
         
 def main():
     """
